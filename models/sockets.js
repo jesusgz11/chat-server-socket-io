@@ -1,15 +1,16 @@
 class Sockets {
   constructor(io) {
     this.io = io;
-    this.socketEvents()
+    this.onConnection.bind(this)
+    this.socketEvents();
+  }
+
+  onConnection(socket) {
+    
   }
 
   socketEvents() {
-    this.io.on('connection', (socket) => {
-      socket.on('message-to-server', (data) => {
-        this.io.emit('message-from-server', data);
-      });
-    });
+    this.io.on('connection', this.onConnection);
   }
 }
 
