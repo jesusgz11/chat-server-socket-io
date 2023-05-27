@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { generateApiError } = require('../helpers/generate-api-error');
 
 const dbConection = async () => {
   try {
@@ -8,8 +9,8 @@ const dbConection = async () => {
     });
     console.log('DB online');
   } catch (error) {
-    console.log(error);
-    throw new Error('Failed to connect to database');
+    await mongoose.disconnect();
+    throw generateApiError({ message: 'Conection to DB failed' });
   }
 };
 

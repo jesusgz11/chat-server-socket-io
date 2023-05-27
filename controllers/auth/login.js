@@ -1,17 +1,14 @@
 const { response, request } = require('express');
+const { sendResponse } = require('../../helpers/send-response');
 
-const login = async (req = request, res = response) => {
+const login = async (req = request, res = response, next) => {
   try {
     const { password, email } = req.body;
-    res.json({
-      ok: true,
+    sendResponse(res, {
+      payload: { ok: true, password, email },
     });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      msg: 'Contact the administrator',
-    });
+    return next(error);
   }
 };
 

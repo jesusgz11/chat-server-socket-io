@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
 const bcrypt = require('bcryptjs');
+const { generateApiError } = require('../helpers/generate-api-error');
 
 const UserSchema = Schema({
   username: {
@@ -27,10 +28,12 @@ UserSchema.pre('save', async function (next) {
   try {
     const hashedPassword = await bcrypt.hash(user.password, 10);
     user.password = hashedPassword;
+    return next();
   } catch (error) {
-    return next(error);
+    throw generateApiError({
+      message: `Fallo al guardar documento de ${user.email}`,
+    });
   }
-  return next();
 });
 
 UserSchema.methods.comparePasswords = async function (
