@@ -6,8 +6,9 @@ const {
 const validateFields = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    const mappedErrors = errors.mapped();
     throw generateValidatorError({
-      errorsInputs: errors.mapped(),
+      errorsInputs: mappedErrors,
     });
   }
   return next();

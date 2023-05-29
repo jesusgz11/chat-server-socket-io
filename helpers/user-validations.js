@@ -1,5 +1,6 @@
 const { check } = require('express-validator');
 const User = require('../models/user');
+const { MESSAGES } = require('../constants/messages');
 
 const requireEmail = () =>
   check('email', 'El email tiene un formato inválido').isEmail();
@@ -14,7 +15,7 @@ const emailExist = () =>
   check('email').custom(async (value) => {
     const existingUser = await User.findOne({ email: value });
     if (existingUser) {
-      throw new Error('A user already exists with this e-mail address');
+      throw new Error(MESSAGES.EMAIL_EXISTS);
     }
   });
 

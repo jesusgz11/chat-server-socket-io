@@ -1,7 +1,6 @@
-const { response } = require('express');
 const { APISuccessfulResponse } = require('../utils/response');
 
-const sendResponse = (res = response, { payload, message, statusCode }) => {
+const successHandler = function ({ payload, message, statusCode }) {
   const {
     httpStatusCode,
     message: msg,
@@ -11,13 +10,11 @@ const sendResponse = (res = response, { payload, message, statusCode }) => {
     message,
     payload,
   });
-  res.status(httpStatusCode).json({
+  this.status(httpStatusCode).json({
     httpStatusCode,
     message: msg,
     data,
   });
 };
 
-module.exports = {
-  sendResponse,
-};
+module.exports = successHandler;

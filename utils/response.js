@@ -7,7 +7,6 @@ class APISuccessfulResponse {
   payload;
   constructor({ httpStatusCode, message, payload }) {
     if (httpStatusCode) {
-      console.log("entre");
       this.httpStatusCode = httpStatusCode;
     }
     if (message) {

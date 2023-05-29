@@ -3,10 +3,10 @@ const { APIError } = require('./api-error');
 
 class ValidatorInputError extends APIError {
   errorsInputs;
-  constructor({ errorsInputs }) {
+  constructor({ errorsInputs, message }) {
     super({
       httpStatusCode: STATUS_CODES.BAD_REQUEST,
-      message: 'Invalid Inputs',
+      message: message || 'Invalid Inputs',
     });
     this.errorsInputs = errorsInputs;
   }

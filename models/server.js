@@ -3,14 +3,14 @@ const express = require('express');
 // Servidor de Sockets
 const http = require('http');
 const socketIO = require('socket.io');
-const path = require('path');
 const Sockets = require('./sockets');
 const cors = require('cors');
 const { dbConection } = require('../database/config');
 const { errorHandler } = require('../middlewares/error-handler');
 const { STATUS_CODES } = require('../constants/status-codes');
-const { apiError } = require('../helpers/generate-api-error');
+const { generateApiError } = require('../helpers/generate-api-error');
 const { validateJson } = require('../middlewares/validate-json');
+const successHandler = require('../middlewares/success-handler');
 
 class Server {
   constructor() {
@@ -24,24 +24,18 @@ class Server {
   }
 
   middlewares() {
-    // Desplegar directorio publico
-    this.app.use(express.static(path.resolve(__dirname, '../public')));
     // CORS
     this.app.use(cors());
     // Parse Body
     this.app.use(express.json());
     // Validate JSON
     this.app.use(validateJson);
-    // API
-    this.app.use('/api/login', require('../router/auth'));
-    // Other Routes
-    this.app.all('*', (req) => {
-      console.log(req.query);
-      throw apiError({
-        httpStatusCode: STATUS_CODES.NOT_FOUND,
-        message: `Can't find ${req.originalUrl} on this server!`,
-      });
+    this.app.use((req, res, next) => {
+      res.success = successHandler.bind(res);
+      next();
     });
+    // API
+    require('../routes')(this.app);
     // Error handler
     this.app.use(errorHandler);
   }
