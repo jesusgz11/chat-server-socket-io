@@ -7,10 +7,9 @@ const Sockets = require('./sockets');
 const cors = require('cors');
 const { dbConection } = require('../database/config');
 const { errorHandler } = require('../middlewares/error-handler');
-const { STATUS_CODES } = require('../constants/status-codes');
-const { generateApiError } = require('../helpers/generate-api-error');
 const { validateJson } = require('../middlewares/validate-json');
 const successHandler = require('../middlewares/success-handler');
+const morgan = require('morgan');
 
 class Server {
   constructor() {
@@ -30,6 +29,10 @@ class Server {
     this.app.use(express.json());
     // Validate JSON
     this.app.use(validateJson);
+    // Morgan
+    if (process.env.NODE_ENV === 'development') {
+      this.app.use(morgan('dev'));
+    }
     this.app.use((req, res, next) => {
       res.success = successHandler.bind(res);
       next();

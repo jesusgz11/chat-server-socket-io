@@ -14,6 +14,7 @@ const successHandler = function ({ payload, message, statusCode }) {
     httpStatusCode,
     message: msg,
     data,
+    ok: true,
   });
 };
 

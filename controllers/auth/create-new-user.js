@@ -1,3 +1,4 @@
+const { generateJWT } = require('../../helpers/generate-jwt');
 const User = require('../../models/user');
 
 const createNewUser = async (req, res, next) => {
@@ -5,12 +6,13 @@ const createNewUser = async (req, res, next) => {
     const dataUser = req.body;
     const newUser = new User(dataUser);
     await newUser.save();
+    const token = await generateJWT(newUser.id);
     res.success({
       statusCode: 201,
       message: 'Usuario creado con éxito',
       payload: {
-        ok: true,
         user: newUser,
+        token,
       },
     });
   } catch (error) {

@@ -10,6 +10,10 @@ const {
   requireUsername,
   emailExist,
 } = require('../../helpers/user-validations');
+const {
+  validateExistingEmail,
+} = require('../../middlewares/validate-existing-email');
+const { validateJWT } = require('../../middlewares/validate-jwt');
 
 module.exports = (router) => {
   router
@@ -25,9 +29,18 @@ module.exports = (router) => {
       createNewUser
     )
 
-    .post('/login', [requireEmail(), requirePassword(), validateFields], login)
+    .post(
+      '/login',
+      [
+        requireEmail(),
+        requirePassword(),
+        validateFields,
+        validateExistingEmail,
+      ],
+      login
+    )
 
-    .get('/renew-token', renewToken);
+    .get('/renew-token', [validateJWT], renewToken);
 
   return router;
 };
