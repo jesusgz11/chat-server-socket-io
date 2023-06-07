@@ -20,10 +20,8 @@ const login = async (req = request, res = response, next) => {
 
     const token = await generateJWT(req.userDB.id);
 
-    delete req.userDB;
-
     res.success({
-      payload: { token },
+      payload: { token, user: req.userDB },
     });
   } catch (error) {
     return next(error);

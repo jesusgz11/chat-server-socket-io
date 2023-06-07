@@ -14,6 +14,8 @@ const {
   validateExistingEmail,
 } = require('../../middlewares/validate-existing-email');
 const { validateJWT } = require('../../middlewares/validate-jwt');
+const { validateUid } = require('../../middlewares/validate-uid');
+
 
 module.exports = (router) => {
   router
@@ -40,7 +42,7 @@ module.exports = (router) => {
       login
     )
 
-    .get('/renew-token', [validateJWT], renewToken);
+    .get('/renew-token', [validateJWT, validateUid], renewToken);
 
   return router;
 };
