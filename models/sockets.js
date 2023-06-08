@@ -1,14 +1,14 @@
-const registerChatHanlders = require('../handlers/chat');
+const registerChatHandlers = require('../handlers/chat');
 
 class Sockets {
   constructor(io) {
     this.io = io;
-    this.onConnection.bind(this);
+    this.onConnection = this.onConnection.bind(this);
     this.socketEvents();
   }
 
   onConnection(socket) {
-    registerChatHanlders({ io: this.io, socket });
+    registerChatHandlers({ io: this.io, socket });
   }
 
   socketEvents() {
