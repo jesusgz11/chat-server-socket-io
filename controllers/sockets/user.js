@@ -31,6 +31,16 @@ const userConnection = async (action, uid) => {
   }
 };
 
+const getUsers = async (uid) => {
+  try {
+    const users = await User.find({ _id: { $ne: uid } }).sort('-online');
+    return users;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   userConnection,
+  getUsers,
 };

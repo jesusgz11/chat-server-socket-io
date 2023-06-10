@@ -1,4 +1,4 @@
-const { userConnection } = require('../controllers/sockets/user');
+const { userConnection, getUsers } = require('../controllers/sockets/user');
 const { validateSocketToken } = require('../helpers/validate-socket-token');
 
 module.exports = async ({ io, socket }) => {
@@ -10,6 +10,8 @@ module.exports = async ({ io, socket }) => {
   }
 
   await userConnection('connect', uid);
+
+  io.emit('users-list', await getUsers(uid));
 
   socket.on('disconnect', async () => {
     console.log('cliente desconectado');
