@@ -31,9 +31,9 @@ const userConnection = async (action, uid) => {
   }
 };
 
-const getUsers = async (uid) => {
+const getUsers = async () => {
   try {
-    const users = await User.find({ _id: { $ne: uid } }).sort('-online');
+    const users = await User.find().sort('-online');
     return users;
   } catch (error) {
     console.log(error);

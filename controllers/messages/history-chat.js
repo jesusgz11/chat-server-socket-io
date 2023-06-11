@@ -16,7 +16,7 @@ const historyChat = async (req, res, next) => {
         { to: userId, from: fromUser },
       ],
     })
-      .sort({ createdAt: 'desc' })
+      .sort({ createdAt: 'asc' })
       .limit(30);
 
     res.success({
